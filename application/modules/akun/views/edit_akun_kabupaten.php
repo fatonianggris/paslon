@@ -1,0 +1,339 @@
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<?php $usr = $this->session->userdata("ktpapps"); ?>
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Edit Admin Kabupaten</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Admin Kabupaten</a></li>
+                <li class="breadcrumb-item active">Edit Admin Kabupaten</li>
+            </ol> 
+            <a href="<?php echo site_url('akun/daftar_admin_kabupaten'); ?>"> <button type="button" class="btn btn-warning d-none d-lg-block m-l-15"><i class="fa fa-list-ol"></i> Daftar Admin Kabupaten</button></a> 
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-12">
+        <!-- Column -->
+        <div class="col-lg-12 col-md-12">
+            <?php echo $this->session->flashdata('flash_message'); ?>
+        </div>
+        <!-- Column -->
+        <div class="card">
+            <div class="card card-body">
+                <h4 class="card-title">Formulir Edit Admin Kabupaten</h4>
+                <h6 class="card-subtitle"> Silahkan mengisi formulir edit admin kabupaten yang sesuai </h6>
+                <form class="form-horizontal m-t-20 row" action="<?php echo site_url('akun/edit_admin_kabupaten/' . $admin_kabupaten[0]->id_user); ?>" enctype="multipart/form-data" method="post">          
+                    <div class="form-group col-md-6 m-t-10" >
+                        <label>Nama Lengkap Admin Kabupaten <span class="text-danger">*</span></label>
+                        <input type="text" name="nama_admin" value="<?php echo $admin_kabupaten[0]->nama_admin; ?>" class="form-control" placeholder="Isikan nama lengkap admin" required data-validation-required-message="Kolom ini wajib diisi">
+                        <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                    </div>
+                    <div class="form-group col-md-3 m-t-10">
+                        <label>Hak Akses Admin Kabupaten <span class="text-danger">*</span></label>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="create" value="1" class="custom-control-input" id="customCheck1" <?php echo ($admin_kabupaten[0]->create_prev ? 'checked' : ''); ?>>
+                            <label class="custom-control-label" for="customCheck1">Create</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="read" value="1" checked class="custom-control-input" id="customCheck2" disabled="" >
+                            <label class="custom-control-label" for="customCheck2">Read</label>
+                        </div>          
+                        <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                    </div>
+                    <div class="form-group col-md-3 m-t-10">
+                        <label></label>                        
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="update" value="1" class="custom-control-input" id="customCheck3" <?php echo ($admin_kabupaten[0]->update_prev ? 'checked' : ''); ?>>
+                            <label class="custom-control-label" for="customCheck3">Update</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="delete"value="1" class="custom-control-input" id="customCheck4" <?php echo ($admin_kabupaten[0]->delete_prev ? 'checked' : ''); ?>>
+                            <label class="custom-control-label" for="customCheck4">Delete</label>
+                        </div>
+                    </div>       
+                    <?php if ($usr['role_admin'] == 1) { ?>
+                        <div class="form-group col-md-3 m-t-10">
+                            <label>Pilih Wilayah/Regional Admin <span class="text-danger">*</span></label>
+                            <select name="provinsi" class="select2 form-control custom-select" style="width: 100%; height:36px;" id="provinsi" required>                               
+                                <option value="<?php echo substr($usr['id_ref'], 0, 2); ?>">
+                                    <?php
+                                    if (!empty($provinsi)) {
+                                        foreach ($provinsi as $key => $value) {
+                                            if ($value->id == substr($usr['id_ref'], 0, 2)) {
+                                                ?>
+                                                <?php echo $value->nama; ?>                                    
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                    ?>     
+                                </option>               
+                            </select>
+                            <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                        </div>
+                    <?php } else { ?>
+                        <div class="form-group col-md-3 m-t-10">
+                            <label>Pilih Wilayah/Regional Admin <span class="text-danger">*</span></label>
+                            <select name="provinsi" class="select2 form-control custom-select" style="width: 100%; height:36px;" id="provinsi" required>
+                                <option value="<?php echo substr($admin_kabupaten[0]->id_ref, 0, 2); ?>">
+                                    <?php
+                                    if (!empty($prov)) {
+                                        foreach ($prov as $key => $value) {
+                                            if ($value->id == substr($admin_kabupaten[0]->id_ref, 0, 2)) {
+                                                ?>
+                                                <?php echo $value->nama; ?>                                    
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                    ?>     
+                                </option>
+                                <?php
+                                if (!empty($provinsi)) {
+                                    foreach ($provinsi as $key => $value) {
+                                        ?>
+                                        <option value="<?php echo $value->id; ?>"><?php echo $value->nama; ?></option>                                     
+                                        <?php
+                                    }
+                                }
+                                ?>                       
+                            </select>
+                            <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                        </div>
+                    <?php } ?>
+                    <?php if ($usr['role_admin'] == 1) { ?>
+                        <div class="form-group col-md-3 m-t-10">
+                            <label></label>
+                            <select name="kabupaten" class="select2 form-control custom-select" style="width: 100%; height:36px;" id="kabupaten" required>
+                                <option value="<?php echo substr($admin_kabupaten[0]->id_ref, 2, 2); ?>">
+                                    <?php
+                                    if (!empty($kab)) {
+                                        foreach ($kab as $key => $value) {
+                                            if ($value->id == substr($admin_kabupaten[0]->id_ref, 2, 2) && $value->id_dati1 == substr($admin_kabupaten[0]->id_ref, 0, 2)) {
+                                                ?>
+                                                <?php echo $value->nama; ?>                                    
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                    ?>  
+                                    <?php
+                                    if (!empty($kab)) {
+                                        foreach ($kab as $key => $value) {
+                                            if ($value->id_dati1 == substr($admin_kabupaten[0]->id_ref, 0, 2)) {
+                                                ?>
+                                            <option value="<?php echo $value->id; ?>"><?php echo $value->nama; ?></option>                                     
+                                            <?php
+                                        }
+                                    }
+                                }
+                                ?>   
+                                </option>                                       
+                            </select>
+                            <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                        </div>
+                    <?php } else { ?>
+                        <div class="form-group col-md-3 m-t-10">
+                            <label></label>
+                            <select name="kabupaten" class="select2 form-control custom-select" style="width: 100%; height:36px;" id="kabupaten" required>
+                                <option value="<?php echo substr($admin_kabupaten[0]->id_ref, 2, 2); ?>">
+                                    <?php
+                                    if (!empty($kab)) {
+                                        foreach ($kab as $key => $value) {
+                                            if ($value->id == substr($admin_kabupaten[0]->id_ref, 2, 2) && $value->id_dati1 == substr($admin_kabupaten[0]->id_ref, 0, 2)) {
+                                                ?>
+                                                <?php echo $value->nama; ?>                                    
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                    ?>  
+                                </option>                                       
+                            </select>
+                            <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                        </div>
+                    <?php } ?>
+                    <div class="form-group col-md-6 m-t-10" >
+                        <label>Nama Email Admin Kabupaten <span class="text-danger">*</span></label>
+                        <input type="email" name="email" value="<?php echo $admin_kabupaten[0]->email; ?>" class="form-control" placeholder="Isikan email admin provinsi" required data-validation-required-message="Kolom ini wajib diisi">
+                        <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                    </div>
+                    <div class="form-group col-md-2 m-t-5">
+                        <label>Status Admin Kabupaten<span class="text-danger">*</span></label>
+                        <div class="custom-control custom-radio m-t-10">
+                            <input type="radio" id="sts1" value="1" name="status" class="custom-control-input"  <?php echo ($admin_kabupaten[0]->status == '1') ? 'checked' : '' ?>>
+                            <label class="custom-control-label" for="sts1">Aktif</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="sts2" value="0" name="status" class="custom-control-input"  <?php echo ($admin_kabupaten[0]->status == '0') ? 'checked' : '' ?>>
+                            <label class="custom-control-label" for="sts2">Tidak Aktif</label>
+                        </div>
+                        <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                    </div> 
+                    <div class="form-group col-md-5 m-t-10">
+                        <label>Nomor HP Admin Kabupaten<span class="text-danger">*</span></label>
+                        <div class="input-group">                            
+                            <input type="text" name="nomor_hp" value="<?php echo $admin_kabupaten[0]->nomor_hp; ?>" data-mask="00000000000000" class="form-control" placeholder="Isikan nomor HP admin provinsi" required data-validation-required-message="Kolom ini wajib diisi">
+                            <div class="input-group-append">
+                                <span class="input-group-text">Angka</span>
+                            </div>
+                        </div>
+                        <small class="form-control-feedback">*Kolom Ini Harus <b>Diisi</b> ! </small>
+                    </div>
+
+                    <div class="form-group col-md-5 m-t-10">
+                        <label>License Key Expired <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="text" name="license_exp" class="form-control" value="<?php echo $admin_kabupaten[0]->license_exp; ?>" placeholder="Tanggal Expired" id="license_date" required data-validation-required-message="Kolom ini wajib diisi!">                          
+                        </div>
+                        <small class="form-control-feedback">
+                            <?php if ($admin_kabupaten[0]->license_exp == NULL or $admin_kabupaten[0]->license_exp == '') { ?>
+                                <span class="label label-info">
+                                    Masa Expired <b>Belum</b> Diinputkan
+                                </span>
+                            <?php } else { ?>
+                                <?php
+                                date_default_timezone_set("Asia/Jakarta");
+                                $date = DateTime::createFromFormat('d/m/Y', $admin_kabupaten[0]->license_exp);
+                                $newdate = $date->format('Y-m-d');
+                                $from = strtotime($newdate);
+                                $today = time();
+                                $difference = $from - $today;
+                                $hasil = floor($difference / 86400) + 1;
+                                if ($hasil > 10) {
+                                    ?>
+                                    <span class="label label-success">
+                                        <b><?php echo $hasil; ?></b> hari lagi
+                                    </span>
+                                <?php } elseif ($hasil <= 10 && $hasil > 0) { ?>
+                                    <span class="label label-warning">
+                                        <b><?php echo $hasil; ?></b> hari lagi
+                                    </span>
+                                <?php } elseif ($hasil <= 0) { ?>
+                                    <span class="label label-danger">
+                                        <b>Expired</b>
+                                    </span>
+                                <?php } ?>
+                            <?php } ?>
+                        </small>
+                    </div>
+                    <div class="form-group col-md-12 m-t-5">
+                        <label>License Key (base 64) <span class="text-danger">*</span></label>
+                        <div class="input-group"> 
+                            <textarea class="form-control" rows="5" name="license" ><?php echo $admin_kabupaten[0]->license; ?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 m-t-10">
+                        <label>Foto Admin Kabupaten</label>
+                        <input type="text" name="image" value="<?php echo $admin_kabupaten[0]->img ?>" style="display:none" />
+                        <input type="text" name="image_thumb" value="<?php echo $admin_kabupaten[0]->img_thumb; ?>" style="display:none" />
+                        <input type="file" name="img" class="dropify" data-max-file-size="1M" data-height="300" data-allowed-file-extensions="jpg png jpeg ico" data-default-file="<?php echo base_url() . $admin_kabupaten[0]->img ?>"/>
+                        <small class="form-control-feedback">*Gunakan Ukuran File Kurang Dari <b>1 Mb</b> ! </small>
+                    </div>                 
+                    <div class="col-md-12 row m-b-10">
+                        <div id="accordion2" class="minimal-faq col-md-12" aria-multiselectable="true">
+                            <div class="card m-b-0">
+                                <div class="card-header" role="tab" id="headingOne11">
+                                    <h5 class="mb-0">
+                                        <a class="link" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne11" aria-expanded="true" aria-controls="collapseOne11">
+                                            ingin mengubah password?. KLIK DISINI
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseOne11" class="collapse form-group row">
+                                    <div class="card-body row">
+                                        <div class="col-md-4 m-t-10">
+                                            <label>Password Lama <span class="text-danger">*</span></label>
+                                            <fieldset class="controls">
+                                                <div class="input-group">                            
+                                                    <input type="password" name="password_lama" class="form-control">                                  
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class=" col-md-4 m-t-10">
+                                            <label>Password Baru <span class="text-danger">*</span></label>
+                                            <fieldset class="controls">
+                                                <div class="input-group">                            
+                                                    <input type="password" name="password_baru" class="form-control" id="c_pass_baru">                                 
+                                                </div>
+                                            </fieldset>
+                                            <small id="info_pass_baru" class="form-control-feedback"></small>
+                                        </div>
+                                        <div class=" col-md-4 m-t-10">
+                                            <label>Konfirmasi Password Baru <span class="text-danger">*</span></label>
+                                            <fieldset class="controls">
+                                                <div class="input-group">                            
+                                                    <input type="password" name="conf_password_lama" class="form-control" id="c_pass_lama">                                  
+                                                </div>
+                                            </fieldset>
+                                            <small id="info_pass_konf" class="form-control-feedback"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 m-t-10">
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Submit</button>
+                        <button type="reset" onclick="history.back()" class="btn btn-inverse waves-effect waves-light">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- .row -->
+<!-- Plugin JavaScript -->
+<script>
+    var a = document.getElementById('info_pass_baru');
+    var b = document.getElementById('info_pass_konf');
+    var pass_baru;
+    var pass_konf_baru;
+
+    $('input[id="c_pass_baru"]').on('input', function () {
+        pass_baru = $(this).val();
+        if ($(this).val().length < 5) {
+            a.innerHTML = "<b class='text-danger'>*Password harus lebih dari 5 karakter</b>";
+        } else {
+            a.innerHTML = "";
+            if ($(this).val() != pass_konf_baru) {
+                b.innerHTML = "<b class='text-danger'>*Password tidak sesuai</b>";
+            } else if ($(this).val() == pass_konf_baru) {
+                b.innerHTML = "<b class='text-success'>*Password sesuai</b>";
+            }
+        }
+    });
+
+    $('input[id="c_pass_lama"]').on('input', function () {
+        pass_konf_baru = $(this).val()
+        if ($(this).val() != pass_baru) {
+            b.innerHTML = "<b class='text-danger'>*Password tidak sesuai</b>";
+        } else {
+            b.innerHTML = "<b class='text-success'>*Password sesuai</b>";
+        }
+    });
+</script>
+<?php if ($usr['role_admin'] == 1) { ?>
+
+<?php } else { ?>
+    <script>
+
+        $(document).ready(function () {
+            var id_prov;
+            $("#provinsi").change(function () {
+                id_prov = $(this).val();
+                var url = "<?php echo site_url('regional/add_ajax_kab'); ?>/" + id_prov;
+                $('#kabupaten').load(url);
+                return false;
+            })
+        });
+    </script>
+<?php } ?>

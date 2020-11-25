@@ -1,0 +1,20 @@
+/*
+Template Name: Admin Template
+Author: Wrappixel
+
+File: scss
+*/
+
+@import '../variable';
+/*******************
+ Our income
+*******************/
+#income{
+   .c3-grid line{
+        stroke:$border-color;  
+    }
+}
+  
+.c3 path{
+    stroke:$border-color;
+}
